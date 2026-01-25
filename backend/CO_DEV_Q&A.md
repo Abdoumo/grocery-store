@@ -31,7 +31,7 @@ GET /api/shop/list?type=restaurant&search=pizza
 
 ### Endpoint Details
 
-**Base URL:** `https://backend.rani-jay.com/api/shop/list`
+**Base URL:** `http://localhost:4000/api/shop/list`
 
 **Method:** `GET`
 

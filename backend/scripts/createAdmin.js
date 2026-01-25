@@ -19,7 +19,7 @@ const userModel =
 const createAdmin = async () => {
   try {
     // ✅ NO username / password
-    await mongoose.connect("mongodb://127.0.0.1:27017/fooddelivery");
+    await mongoose.connect("mongodb://127.0.0.1:27017/ranijey");
     console.log("MongoDB Connected (no auth)");
 
     const adminEmail = "admin@RaniJay.com";

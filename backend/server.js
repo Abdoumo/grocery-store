@@ -26,8 +26,9 @@ const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       'https://rani-jay.com',
-      'https://admin.rani-jay.com',
-      'http://localhost:5173',
+      'https://http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:4000',
       'http://localhost:3000',
     ];
 

@@ -10,7 +10,7 @@ info:
     name: ISC
 
 servers:
-  - url: https://backend.rani-jay.com/api
+  - url: http://localhost:4000/api
     description: Production Server
   - url: http://localhost:5000/api
     description: Development Server

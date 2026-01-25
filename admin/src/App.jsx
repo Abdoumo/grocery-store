@@ -17,7 +17,7 @@ import Login from "./components/Login/Login";
 import { StoreContext } from "./context/StoreContext";
 
 const App = () => {
-  const url = import.meta.env.VITE_API_URL || "https://backend.rani-jay.com";
+  const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
   const { admin, token, userRole } = useContext(StoreContext);
   const isDelivery = userRole === "delivery" || userRole === "livreur";
   const isAuthenticated = token && (admin || isDelivery);
