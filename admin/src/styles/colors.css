@@ -1,0 +1,67 @@
+/* ========================================
+   ADMIN PANEL - GROCERY STORE GREEN SYSTEM
+   Modern, Professional, & Efficient
+   ======================================== */
+
+:root {
+  /* PRIMARY GREENS - Main Brand Colors */
+  --primary-dark: #1B5E20;      /* Deep forest green */
+  --primary-main: #2E7D32;      /* Vibrant growth green */
+  --primary-light: #4CAF50;     /* Fresh green */
+  --primary-lighter: #81C784;   /* Light natural green */
+  --primary-lightest: #C8E6C9;  /* Very light green background */
+
+  /* SECONDARY COLORS - Accents & Highlights */
+  --secondary-dark: #00796B;    /* Teal green */
+  --secondary-main: #009688;    /* Medium teal */
+  --secondary-light: #4DB6AC;   /* Light teal */
+
+  /* SEMANTIC COLORS */
+  --success: #2E7D32;           /* Green = success */
+  --warning: #F57C00;           /* Orange = warning */
+  --error: #C62828;             /* Red = error */
+  --info: #1565C0;              /* Blue = info */
+
+  /* NEUTRAL PALETTE */
+  --neutral-dark: #1A1A1A;      /* Almost black text */
+  --neutral-600: #424242;       /* Dark gray text */
+  --neutral-500: #757575;       /* Medium gray text */
+  --neutral-400: #BDBDBD;       /* Light gray placeholder */
+  --neutral-300: #E0E0E0;       /* Light gray borders */
+  --neutral-200: #F5F5F5;       /* Very light background */
+  --neutral-100: #FAFAFA;       /* Off-white background */
+  --white: #FFFFFF;
+
+  /* GRADIENTS */
+  --gradient-primary: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%);
+  --gradient-dark: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-main) 100%);
+
+  /* SHADOWS */
+  --shadow-sm: 0 2px 8px rgba(30, 94, 32, 0.08);
+  --shadow-md: 0 4px 16px rgba(30, 94, 32, 0.12);
+  --shadow-lg: 0 8px 32px rgba(30, 94, 32, 0.15);
+
+  /* BORDER RADIUS */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* TRANSITIONS */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ========================================
+   ACCESSIBILITY - High Contrast Mode
+   ======================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --primary-dark: #0D3818;
+    --primary-main: #1B5E20;
+    --neutral-dark: #000000;
+    --neutral-600: #1A1A1A;
+  }
+}

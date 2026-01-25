@@ -1,0 +1,174 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    background: linear-gradient(90deg, var(--primary-main) 0%, var(--secondary-main) 100%);
+    box-shadow: var(--shadow-md);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.navbar-logo {
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.navbar-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.15);
+    transition: all var(--transition-normal);
+}
+
+.admin-profile:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+.admin-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.admin-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-email {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--white);
+    margin: 0;
+}
+
+.logout-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--error);
+    background: rgba(198, 40, 40, 0.1);
+    border: 1px solid rgba(198, 40, 40, 0.3);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.logout-button:hover {
+    background: rgba(198, 40, 40, 0.15);
+    color: #B71C1C;
+    transform: translateX(2px);
+    border-color: rgba(198, 40, 40, 0.5);
+}
+
+.logout-button:active {
+    transform: translateX(0);
+}
+
+.logout-icon {
+    font-size: 16px;
+}
+
+.logout-text {
+    display: inline;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 12px 20px;
+        gap: 16px;
+    }
+
+    .navbar-logo {
+        width: 32px;
+        height: 32px;
+    }
+
+    .navbar-title {
+        font-size: 16px;
+    }
+
+    .admin-info {
+        display: none;
+    }
+
+    .logout-text {
+        display: none;
+    }
+
+    .logout-button {
+        padding: 8px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 16px;
+    }
+
+    .navbar-brand {
+        gap: 8px;
+    }
+
+    .navbar-logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .navbar-title {
+        font-size: 14px;
+    }
+
+    .navbar-actions {
+        gap: 12px;
+    }
+
+    .admin-avatar {
+        width: 28px;
+        height: 28px;
+    }
+}

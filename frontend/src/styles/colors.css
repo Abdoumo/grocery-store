@@ -1,0 +1,96 @@
+/* ========================================
+   GROCERY STORE GREEN COLOR SYSTEM
+   Modern, Fresh, & Accessible
+   ======================================== */
+
+:root {
+  /* PRIMARY GREENS - Main Brand Colors */
+  --primary-dark: #1B5E20;      /* Deep forest green */
+  --primary-main: #2E7D32;      /* Vibrant growth green */
+  --primary-light: #4CAF50;     /* Fresh green */
+  --primary-lighter: #81C784;   /* Light natural green */
+  --primary-lightest: #C8E6C9;  /* Very light green background */
+
+  /* SECONDARY GREENS - Accents & Highlights */
+  --secondary-dark: #00796B;    /* Teal green */
+  --secondary-main: #009688;    /* Medium teal */
+  --secondary-light: #4DB6AC;   /* Light teal */
+  --secondary-lightest: #B2DFDB; /* Very light teal */
+
+  /* ORGANIC/EARTH TONES - Supporting Colors */
+  --accent-earth: #795548;      /* Brown earth */
+  --accent-gold: #FBC02D;       /* Golden harvest */
+  --accent-orange: #FF8A50;     /* Warm citrus */
+
+  /* SEMANTIC COLORS */
+  --success: #2E7D32;           /* Green = success */
+  --warning: #F57C00;           /* Orange = warning */
+  --error: #C62828;             /* Red = error */
+  --info: #1565C0;              /* Blue = info */
+
+  /* NEUTRAL PALETTE */
+  --neutral-dark: #1A1A1A;      /* Almost black text */
+  --neutral-600: #424242;       /* Dark gray text */
+  --neutral-500: #757575;       /* Medium gray text */
+  --neutral-400: #BDBDBD;       /* Light gray placeholder */
+  --neutral-300: #E0E0E0;       /* Light gray borders */
+  --neutral-200: #F5F5F5;       /* Very light background */
+  --neutral-100: #FAFAFA;       /* Off-white background */
+  --white: #FFFFFF;
+
+  /* GRADIENTS - Grocery Store Theme */
+  --gradient-primary: linear-gradient(135deg, #1B5E20 0%, #2E7D32 50%, #4CAF50 100%);
+  --gradient-primary-soft: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+  --gradient-secondary: linear-gradient(135deg, #00796B 0%, #009688 100%);
+  --gradient-earth: linear-gradient(135deg, #2E7D32 0%, #FBC02D 100%);
+  --gradient-harvest: linear-gradient(135deg, #FF8A50 0%, #FBC02D 100%);
+  --gradient-dark: linear-gradient(180deg, #1B5E20 0%, #2E7D32 100%);
+
+  /* SHADOWS */
+  --shadow-sm: 0 2px 8px rgba(30, 94, 32, 0.08);
+  --shadow-md: 0 4px 16px rgba(30, 94, 32, 0.12);
+  --shadow-lg: 0 8px 32px rgba(30, 94, 32, 0.15);
+  --shadow-xl: 0 12px 48px rgba(30, 94, 32, 0.18);
+
+  /* BORDER RADIUS */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* TRANSITIONS */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* ========================================
+   ACCESSIBILITY - High Contrast Mode
+   ======================================== */
+
+@media (prefers-contrast: more) {
+  :root {
+    --primary-dark: #0D3818;
+    --primary-main: #1B5E20;
+    --neutral-dark: #000000;
+    --neutral-600: #1A1A1A;
+  }
+}
+
+/* ========================================
+   DARK MODE SUPPORT (Future Enhancement)
+   ======================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --neutral-dark: #FFFFFF;
+    --neutral-600: #E0E0E0;
+    --neutral-500: #BDBDBD;
+    --neutral-400: #757575;
+    --neutral-300: #424242;
+    --neutral-200: #2A2A2A;
+    --neutral-100: #1A1A1A;
+    --white: #121212;
+  }
+}
