@@ -26,25 +26,82 @@ const placeOrder = async (req, res) => {
       return res.json({ success: false, message: "Address is required" });
     }
 
+    const paymentMethod = req.body.paymentMethod || "cod";
+    const isOnlinePayment = paymentMethod === "satim";
+
     const newOrder = new orderModel({
       userId: req.body.userId,
       shopId: req.body.shopId || null,
       items: req.body.items,
       amount: req.body.amount,
       address: req.body.address,
-      payment: true,
+      payment: !isOnlinePayment,
       status: "Pending",
       deliveryLocation: req.body.deliveryLocation || null,
       deliveryType: req.body.deliveryType || "standard",
+      paymentMethod: paymentMethod,
     });
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
-    res.json({ success: true, message: "Order placed successfully. Please pay on delivery.", orderId: newOrder._id });
+    if (isOnlinePayment) {
+      return res.json({
+        success: true,
+        message: "Order created. Redirecting to payment gateway...",
+        orderId: newOrder._id,
+        requiresPayment: true,
+        paymentMethod: "satim"
+      });
+    } else {
+      return res.json({
+        success: true,
+        message: "Order placed successfully. Please pay on delivery.",
+        orderId: newOrder._id,
+        requiresPayment: false
+      });
+    }
   } catch (error) {
     console.error("Order placement error:", error);
     const errorMessage = error.message || "Failed to create order";
     res.json({ success: false, message: errorMessage });
+  }
+};
+
+const initializePayment = async (req, res) => {
+  try {
+    const { orderId } = req.body;
+
+    if (!orderId) {
+      return res.json({ success: false, message: "Order ID is required" });
+    }
+
+    const order = await orderModel.findById(orderId);
+    if (!order) {
+      return res.json({ success: false, message: "Order not found" });
+    }
+
+    if (order.payment) {
+      return res.json({ success: false, message: "Order already paid" });
+    }
+
+    // For development: use local test payment page
+    // In production, integrate with actual payment gateway like Chargily
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+    const paymentGatewayUrl = process.env.PAYMENT_GATEWAY_URL || `${frontendUrl}/payment-test`;
+    const checkoutUrl = `${paymentGatewayUrl}?orderId=${orderId}&amount=${order.amount}`;
+
+    console.log(`[initializePayment] Order ${orderId}: Redirecting to ${checkoutUrl}`);
+
+    res.json({
+      success: true,
+      message: "Redirecting to payment gateway",
+      paymentUrl: checkoutUrl,
+      orderId: orderId,
+      amount: order.amount
+    });
+  } catch (error) {
+    console.error("Payment initialization error:", error);
+    res.json({ success: false, message: "Error initializing payment" });
   }
 };
 
@@ -442,4 +499,4 @@ const markDelivered = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, userOrders, listOrders, updateStatus, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered };
+export { placeOrder, verifyOrder, initializePayment, userOrders, listOrders, updateStatus, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered };

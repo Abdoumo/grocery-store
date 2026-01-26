@@ -10,6 +10,7 @@ import AddNoteModal from "./components/AddNoteModal/AddNoteModal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify/Verify";
+import PaymentTest from "./pages/PaymentTest/PaymentTest";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import NearestOrders from "./pages/NearestOrders/NearestOrders";
 import DeliveryAccount from "./pages/DeliveryAccount/DeliveryAccount";
@@ -47,14 +48,15 @@ const App = () => {
           onCancel={() => setShowNoteModal(false)}
         />
       )}
+      <Navbar setShowLogin={setShowLogin} />
       <div className="app">
         <ToastContainer />
-        <Navbar setShowLogin={setShowLogin} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/payment-test" element={<PaymentTest />} />
           <Route path="/myorders" element={<MyOrders />} />
           <Route path="/nearest-orders" element={<NearestOrders />} />
           <Route path="/delivery/account/*" element={<DeliveryAccount />} />

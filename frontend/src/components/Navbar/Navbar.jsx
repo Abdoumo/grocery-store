@@ -20,7 +20,7 @@ const Navbar = ({ setShowLogin }) => {
     <div className="navbar">
       <Link to="/" className="navbar-brand">
         <span className="navbar-brand-icon">🥬</span>
-        <span className="navbar-brand-text">FreshMart</span>
+        <span className="navbar-brand-text">AIC-Groceries</span>
       </Link>
       <ul className="navbar-menu">
         <Link

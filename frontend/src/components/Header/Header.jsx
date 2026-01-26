@@ -3,13 +3,15 @@ import "./Header.css";
 
 const Header = () => {
   return (
-    <div className="header">
-      <div className="header-contents">
-        <h2>Fresh Groceries, Delivered Fast</h2>
-        <p>
-          Experience premium quality groceries and fresh produce delivered to your doorstep. At FreshMart, we bring farm-fresh excellence and uncompromising quality with every order. Shop smarter, live healthier.
-        </p>
-        <button>Start Shopping</button>
+    <div className="hero-section">
+      <div className="hero-background"></div>
+      <div className="hero-container">
+        <div className="hero-text">
+          <h1>Fresh & Organic Groceries</h1>
+          <p>Quality produce delivered to your door. Shop fresh, eat healthy.</p>
+          <button className="hero-button">Browse Products</button>
+        </div>
+        <div className="hero-accent"></div>
       </div>
     </div>
   );

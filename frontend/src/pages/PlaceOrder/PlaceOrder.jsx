@@ -28,6 +28,8 @@ const PlaceOrder = () => {
   const [loadingDeliveryFee, setLoadingDeliveryFee] = useState(false);
   const [permissionError, setPermissionError] = useState(null);
   const [deliveryType, setDeliveryType] = useState(locationState?.state?.deliveryType || "standard");
+  const [paymentMethod, setPaymentMethod] = useState("cod");
+  const [isProcessing, setIsProcessing] = useState(false);
   const lastFetchedDistanceRef = useRef(null);
   const permissionRequestedRef = useRef(false);
   const debounceTimerRef = useRef(null);
@@ -55,6 +57,7 @@ const PlaceOrder = () => {
 
   const placeOrder = async (event) => {
     event.preventDefault();
+    setIsProcessing(true);
 
     let orderItems = [];
     let shopId = null;
@@ -79,6 +82,7 @@ const PlaceOrder = () => {
 
     if (orderItems.length === 0) {
       toast.error("Cart is empty");
+      setIsProcessing(false);
       return;
     }
 
@@ -108,6 +112,7 @@ const PlaceOrder = () => {
         items: orderItems,
         amount: getTotalCartAmount() + deliveryFee + (deliveryType === "door-to-door" ? 50 : 0),
         deliveryType: deliveryType,
+        paymentMethod: paymentMethod,
       };
 
       if (shopId) {
@@ -131,11 +136,34 @@ const PlaceOrder = () => {
 
       if (response.data.success) {
         setCartItems({});
-        toast.success("Order placed successfully!");
 
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
+        if (response.data.requiresPayment && response.data.paymentMethod === "satim") {
+          toast.info("Redirecting to payment gateway...");
+
+          // Initialize payment and redirect to payment gateway
+          try {
+            const paymentResponse = await axios.post(
+              url + "/api/order/initialize-payment",
+              { orderId: response.data.orderId },
+              { headers: { token } }
+            );
+
+            if (paymentResponse.data.success) {
+              // Redirect to Chargily or payment service
+              window.location.href = paymentResponse.data.paymentUrl;
+            } else {
+              toast.error("Failed to initialize payment");
+            }
+          } catch (paymentError) {
+            console.error("Payment initialization error:", paymentError);
+            toast.error("Error redirecting to payment gateway");
+          }
+        } else {
+          toast.success("Order placed successfully!");
+          setTimeout(() => {
+            navigate("/");
+          }, 1500);
+        }
       } else {
         const errorMsg = response.data.message || "Failed to place order";
         console.error("Order error:", errorMsg);
@@ -151,6 +179,8 @@ const PlaceOrder = () => {
       const errorMessage = error.response?.data?.message || error.message || "Error placing order";
       console.error("Error message being shown:", errorMessage);
       toast.error(`Error: ${errorMessage}`);
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -315,7 +345,7 @@ const PlaceOrder = () => {
           type="text"
           placeholder="Phone"
         />
-        <p className="title" style={{ marginTop: "20px" }}>Delivery Option</p>
+        <p className="title" style={{ marginTop: "20px" }}>Delivery Partner</p>
         <div className="delivery-options">
           <label className="delivery-option">
             <input
@@ -324,7 +354,22 @@ const PlaceOrder = () => {
               checked={deliveryType === "standard"}
               onChange={(e) => setDeliveryType(e.target.value)}
             />
-            <span className="delivery-label">Standard Delivery</span>
+            <div className="delivery-option-content">
+              <span className="delivery-label">Standard Delivery</span>
+              <span className="delivery-description">Regular delivery service</span>
+            </div>
+          </label>
+          <label className="delivery-option">
+            <input
+              type="radio"
+              value="yasir"
+              checked={deliveryType === "yasir"}
+              onChange={(e) => setDeliveryType(e.target.value)}
+            />
+            <div className="delivery-option-content">
+              <span className="delivery-label">Yasir Delivery</span>
+              <span className="delivery-description">Fast & reliable delivery</span>
+            </div>
           </label>
           <label className="delivery-option">
             <input
@@ -333,7 +378,38 @@ const PlaceOrder = () => {
               checked={deliveryType === "door-to-door"}
               onChange={(e) => setDeliveryType(e.target.value)}
             />
-            <span className="delivery-label">Door-to-Door Delivery <span className="delivery-fee">+50DA</span></span>
+            <div className="delivery-option-content">
+              <span className="delivery-label">Door-to-Door Delivery</span>
+              <span className="delivery-fee">+50DA</span>
+            </div>
+          </label>
+        </div>
+
+        <p className="title" style={{ marginTop: "20px" }}>Payment Method</p>
+        <div className="payment-options">
+          <label className="payment-option">
+            <input
+              type="radio"
+              value="cod"
+              checked={paymentMethod === "cod"}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <div className="payment-option-content">
+              <span className="payment-label">Cash on Delivery (COD)</span>
+              <span className="payment-description">Pay when your order arrives</span>
+            </div>
+          </label>
+          <label className="payment-option">
+            <input
+              type="radio"
+              value="satim"
+              checked={paymentMethod === "satim"}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            />
+            <div className="payment-option-content">
+              <span className="payment-label">SATIM (Online Payment)</span>
+              <span className="payment-description">Secure online payment with CIB</span>
+            </div>
           </label>
         </div>
       </div>
@@ -390,7 +466,18 @@ const PlaceOrder = () => {
               </b>
             </div>
           </div>
-          <button type="submit">PROCEED TO PAYMENT</button>
+          <button type="submit" disabled={isProcessing} className="place-order-btn">
+            {isProcessing ? (
+              <>
+                <span className="btn-spinner"></span>
+                Processing...
+              </>
+            ) : paymentMethod === "satim" ? (
+              "Pay with SATIM"
+            ) : (
+              "Confirm Order"
+            )}
+          </button>
         </div>
       </div>
     </form>

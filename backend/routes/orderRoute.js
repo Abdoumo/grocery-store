@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-import { listOrders, placeOrder, updateStatus, userOrders, verifyOrder, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered } from "../controllers/orderController.js";
+import { listOrders, placeOrder, updateStatus, userOrders, verifyOrder, initializePayment, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered } from "../controllers/orderController.js";
 import orderModel from "../models/orderModel.js";
 
 const orderRouter = express.Router();
@@ -44,6 +44,7 @@ orderRouter.get("/debug/all-orders", authMiddleware, async (req, res) => {
 
 // Order placement and verification
 orderRouter.post("/place", authMiddleware, placeOrder);
+orderRouter.post("/initialize-payment", authMiddleware, initializePayment);
 orderRouter.post("/verify", verifyOrder);
 orderRouter.post("/status", authMiddleware, updateStatus);
 

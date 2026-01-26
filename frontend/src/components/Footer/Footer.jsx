@@ -7,9 +7,9 @@ const Footer = () => {
     <div className="footer" id="footer">
       <div className="footer-content">
         <div className="footer-content-left">
-          <h3 className="footer-brand">🥬 FreshMart</h3>
+          <h3 className="footer-brand">🥬 AIC-Groceries</h3>
           <p>
-            FreshMart is your premium grocery delivery partner, bringing the freshest produce and finest products to your table. With quality, speed, and excellence at the core of everything we do, we ensure every delivery is an exceptional experience.
+            AIC-Groceries is your premium grocery delivery partner, bringing the freshest produce and finest products to your table. With quality, speed, and excellence at the core of everything we do, we ensure every delivery is an exceptional experience.
           </p>
           <div className="footer-social-icons">
             <img src={assets.facebook_icon} alt="" />
@@ -30,13 +30,13 @@ const Footer = () => {
           <h2>Get in touch</h2>
           <ul>
             <li>+213 559 44 41 26</li>
-            <li>contact@ranijey.com</li>
+            <li>contact@aic-groceries.com</li>
           </ul>
         </div>
       </div>
       <hr />
       <p className="footer-copyright">
-        Copyright 2024 @ FreshMart - All Rights Reserved.
+        Copyright 2024 @ AIC-Groceries - All Rights Reserved.
       </p>
     </div>
   );

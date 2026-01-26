@@ -1,7 +1,7 @@
 {
-  "name": "ranijey-monorepo",
+  "name": "aic-groceries-monorepo",
   "version": "1.0.0",
-  "description": "RaniJey - Food Ordering Website (Monorepo)",
+  "description": "AIC-Groceries - Grocery Delivery Website (Monorepo)",
   "scripts": {
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\"",
     "dev:backend": "cd backend && npm run server",

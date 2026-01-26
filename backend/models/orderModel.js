@@ -17,7 +17,8 @@ const orderSchema = new mongoose.Schema({
   startedAt: { type: Date, default: null },
   deliveredAt: { type: Date, default: null },
   estimatedDeliveryTime: { type: Number, default: null },
-  deliveryType: { type: String, enum: ["standard", "door-to-door"], default: "standard" },
+  deliveryType: { type: String, enum: ["standard", "yasir", "door-to-door"], default: "standard" },
+  paymentMethod: { type: String, enum: ["cod", "satim"], default: "cod" },
 });
 
 const orderModel =

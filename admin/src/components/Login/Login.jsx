@@ -81,7 +81,7 @@ const Login = ({ url }) => {
         <div className="login-card">
           <div className="login-header">
             <div className="login-logo-section">
-              <h1 className="login-logo">🥬 FreshMart Admin</h1>
+              <h1 className="login-logo">🥬 AIC-Groceries Admin</h1>
               <p className="login-subtitle">Management System</p>
             </div>
           </div>

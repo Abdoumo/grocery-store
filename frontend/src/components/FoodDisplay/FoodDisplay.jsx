@@ -37,25 +37,31 @@ const FoodDisplay = ({ category, setCategory }) => {
 
   return (
     <div className="food-display" id="food-display">
-      <h2>Top dishes near you</h2>
+      <div className="food-display-header">
+        <h2 className="food-display-title">Top Dishes Near You</h2>
+        <p className="food-display-subtitle">Handpicked selections from your favorite shop</p>
+      </div>
 
       {categories.length > 0 && (
-        <div className="food-categories">
-          <button
-            className={`category-btn ${activeCategory === "All" ? "active" : ""}`}
-            onClick={() => handleCategoryChange("All")}
-          >
-            All
-          </button>
-          {categories.map((cat) => (
+        <div className="categories-wrapper">
+          <div className="food-categories">
             <button
-              key={cat.id}
-              className={`category-btn ${activeCategory === cat.id ? "active" : ""}`}
-              onClick={() => handleCategoryChange(cat.id)}
+              className={`category-btn ${activeCategory === "All" ? "active" : ""}`}
+              onClick={() => handleCategoryChange("All")}
             >
-              {cat.name}
+              <span className="category-icon">🎯</span>
+              <span className="category-label">All</span>
             </button>
-          ))}
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                className={`category-btn ${activeCategory === cat.id ? "active" : ""}`}
+                onClick={() => handleCategoryChange(cat.id)}
+              >
+                <span className="category-label">{cat.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
       )}
 

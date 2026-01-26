@@ -24,7 +24,7 @@ const Navbar = () => {
     <div className="navbar">
       <div className="navbar-brand">
         <span className="navbar-logo">🥬</span>
-        <span className="navbar-title">FreshMart Admin</span>
+        <span className="navbar-title">AIC-Groceries Admin</span>
       </div>
 
       <div className="navbar-actions">
