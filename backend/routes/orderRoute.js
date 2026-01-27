@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
-import { listOrders, placeOrder, updateStatus, userOrders, verifyOrder, initializePayment, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered } from "../controllers/orderController.js";
+import { listOrders, placeOrder, updateStatus, userOrders, verifyOrder, initializePayment, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered, handleChargilyWebhook } from "../controllers/orderController.js";
 import orderModel from "../models/orderModel.js";
 
 const orderRouter = express.Router();
@@ -41,6 +41,9 @@ orderRouter.get("/debug/all-orders", authMiddleware, async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 });
+
+// Chargily webhook endpoint (no auth required, called by payment gateway)
+orderRouter.post("/webhook/chargily", handleChargilyWebhook);
 
 // Order placement and verification
 orderRouter.post("/place", authMiddleware, placeOrder);

@@ -1,0 +1,370 @@
+.satim-payment-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.satim-payment-wrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Header Section */
+.satim-header {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.satim-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.satim-logo .logo-text {
+  letter-spacing: 2px;
+}
+
+.satim-logo .logo-cib {
+  background: #ffb800;
+  color: #1e3c72;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 20px;
+}
+
+.satim-header h1 {
+  margin: 10px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.secure-badge {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Order Summary */
+.order-summary {
+  background: #f8f9fa;
+  padding: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.order-summary h2 {
+  font-size: 16px;
+  margin: 0 0 15px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-item .label {
+  color: #666;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.summary-item .value {
+  color: #333;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.summary-item .value.amount {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Payment Form */
+.satim-payment-form {
+  padding: 30px 20px;
+}
+
+.satim-payment-form h2 {
+  font-size: 16px;
+  margin: 0 0 20px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.card-input-wrapper {
+  position: relative;
+}
+
+.card-input-wrapper input {
+  padding-right: 40px;
+}
+
+.card-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.form-group small.test-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+/* Form Row for side-by-side fields */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  margin-bottom: 0;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-pay {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-size: 16px;
+}
+
+.btn-pay:hover:not(:disabled) {
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Test Credentials */
+.test-credentials {
+  background: #fffbea;
+  border-top: 1px solid #ffe0b2;
+  padding: 20px;
+}
+
+.test-credentials h3 {
+  font-size: 14px;
+  margin: 0 0 15px 0;
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.credentials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.credential-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.credential-item strong {
+  font-size: 12px;
+  color: #555;
+  font-weight: 600;
+}
+
+.credential-item code {
+  background: #fff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  border: 1px solid #ffe0b2;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #333;
+  display: block;
+}
+
+/* Security Notice */
+.security-notice {
+  padding: 15px 20px;
+  background: #e3f2fd;
+  border-top: 1px solid #bbdefb;
+  color: #1565c0;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.security-notice p {
+  margin: 0;
+}
+
+.security-notice strong {
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .satim-payment-wrapper {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .satim-header {
+    padding: 25px 15px;
+  }
+
+  .satim-header h1 {
+    font-size: 20px;
+  }
+
+  .satim-payment-form {
+    padding: 20px 15px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .form-group input {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .btn {
+    padding: 12px 15px;
+    font-size: 14px;
+  }
+
+  .order-summary {
+    padding: 15px;
+  }
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.satim-payment-wrapper {
+  animation: slideIn 0.4s ease-out;
+}

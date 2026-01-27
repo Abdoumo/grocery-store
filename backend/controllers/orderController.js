@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import { createCheckout, verifyCheckout } from "../config/chargily.js";
 
 // Haversine formula to calculate distance between two coordinates (in km)
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -84,40 +85,87 @@ const initializePayment = async (req, res) => {
       return res.json({ success: false, message: "Order already paid" });
     }
 
-    // For development: use local test payment page
-    // In production, integrate with actual payment gateway like Chargily
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
-    const paymentGatewayUrl = process.env.PAYMENT_GATEWAY_URL || `${frontendUrl}/payment-test`;
-    const checkoutUrl = `${paymentGatewayUrl}?orderId=${orderId}&amount=${order.amount}`;
+    // Get customer details
+    const customer = await userModel.findById(order.userId);
+    if (!customer) {
+      return res.json({ success: false, message: "Customer not found" });
+    }
 
-    console.log(`[initializePayment] Order ${orderId}: Redirecting to ${checkoutUrl}`);
+    // Create Chargily checkout
+    const checkoutData = await createCheckout({
+      orderId: orderId,
+      amount: order.amount,
+      customerEmail: customer.email,
+      customerPhone: customer.phone || '213XXXXXXXXX',
+      description: `Order payment - ${orderId}`,
+    });
+
+    // Store Chargily checkout ID in order for webhook verification
+    order.chargilyCheckoutId = checkoutData.id;
+    await order.save();
+
+    console.log(`[initializePayment] Order ${orderId}: Chargily checkout created with ID ${checkoutData.id}`);
 
     res.json({
       success: true,
       message: "Redirecting to payment gateway",
-      paymentUrl: checkoutUrl,
+      paymentUrl: checkoutData.checkout_url,
       orderId: orderId,
-      amount: order.amount
+      amount: order.amount,
+      chargilyCheckoutId: checkoutData.id
     });
   } catch (error) {
     console.error("Payment initialization error:", error);
-    res.json({ success: false, message: "Error initializing payment" });
+    res.json({ success: false, message: error.message || "Error initializing payment" });
   }
 };
 
 const verifyOrder = async (req, res) => {
-  const { orderId, success } = req.body;
+  const { orderId, success, checkoutId } = req.body;
   try {
+    const order = await orderModel.findById(orderId);
+    if (!order) {
+      return res.json({ success: false, message: "Order not found" });
+    }
+
+    // If checkoutId is provided, verify with Chargily
+    if (checkoutId) {
+      try {
+        const checkoutStatus = await verifyCheckout(checkoutId);
+
+        if (checkoutStatus.status === 'paid') {
+          // Payment successful
+          order.payment = true;
+          order.chargilyPaymentStatus = 'paid';
+          await order.save();
+          return res.json({ success: true, message: "Payment verified successfully" });
+        } else {
+          // Payment not completed
+          order.chargilyPaymentStatus = checkoutStatus.status;
+          await order.save();
+          return res.json({ success: false, message: `Payment status: ${checkoutStatus.status}` });
+        }
+      } catch (chargilyError) {
+        console.error('[verifyOrder] Chargily verification error:', chargilyError);
+        return res.json({ success: false, message: "Failed to verify payment with gateway" });
+      }
+    }
+
+    // Fallback for development/test mode using success parameter
     if (success == "true") {
-      await orderModel.findByIdAndUpdate(orderId, { payment: true });
-      res.json({ success: true, message: "Paid" });
+      order.payment = true;
+      order.chargilyPaymentStatus = 'paid';
+      await order.save();
+      return res.json({ success: true, message: "Order payment confirmed" });
     } else {
-      await orderModel.findByIdAndDelete(orderId);
-      res.json({ success: false, message: "Not Paid" });
+      // Payment failed - keep order but mark as failed
+      order.chargilyPaymentStatus = 'failed';
+      await order.save();
+      return res.json({ success: false, message: "Payment was not completed" });
     }
   } catch (error) {
-    console.log(error);
-    res.json({ success: false, message: "Error" });
+    console.error('[verifyOrder] Error:', error);
+    res.json({ success: false, message: "Error verifying order" });
   }
 };
 
@@ -499,4 +547,59 @@ const markDelivered = async (req, res) => {
   }
 };
 
-export { placeOrder, verifyOrder, initializePayment, userOrders, listOrders, updateStatus, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered };
+// Handle Chargily webhook for payment confirmations
+const handleChargilyWebhook = async (req, res) => {
+  try {
+    const webhookData = req.body;
+
+    // Log webhook for debugging
+    console.log('[Chargily Webhook] Received:', JSON.stringify(webhookData, null, 2));
+
+    // Validate webhook data
+    if (!webhookData.id || !webhookData.metadata?.orderId) {
+      console.warn('[Chargily Webhook] Invalid webhook data');
+      return res.json({ success: false, message: "Invalid webhook data" });
+    }
+
+    const orderId = webhookData.metadata.orderId;
+    const order = await orderModel.findById(orderId);
+
+    if (!order) {
+      console.warn(`[Chargily Webhook] Order not found: ${orderId}`);
+      return res.json({ success: false, message: "Order not found" });
+    }
+
+    // Handle different webhook events
+    const status = webhookData.status;
+
+    if (status === 'paid') {
+      // Payment successful
+      order.payment = true;
+      order.chargilyPaymentStatus = 'paid';
+      await order.save();
+      console.log(`[Chargily Webhook] Payment confirmed for order ${orderId}`);
+      return res.json({ success: true, message: "Order payment confirmed" });
+    } else if (status === 'expired' || status === 'failed') {
+      // Payment failed or expired
+      order.chargilyPaymentStatus = status;
+      await order.save();
+      console.log(`[Chargily Webhook] Payment ${status} for order ${orderId}`);
+      return res.json({ success: false, message: `Order payment ${status}` });
+    } else if (status === 'pending') {
+      // Payment still pending
+      order.chargilyPaymentStatus = 'pending';
+      await order.save();
+      console.log(`[Chargily Webhook] Payment pending for order ${orderId}`);
+      return res.json({ success: false, message: "Order payment is pending" });
+    }
+
+    // Unknown status
+    console.warn(`[Chargily Webhook] Unknown status: ${status}`);
+    res.json({ success: false, message: "Unknown payment status" });
+  } catch (error) {
+    console.error('[Chargily Webhook] Error:', error);
+    res.json({ success: false, message: "Webhook processing error" });
+  }
+};
+
+export { placeOrder, verifyOrder, initializePayment, userOrders, listOrders, updateStatus, getNearestOrders, getAvailableOrders, getPendingOrders, acceptOrder, getOrder, markDelivered, handleChargilyWebhook };

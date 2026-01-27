@@ -11,6 +11,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Verify from "./pages/Verify/Verify";
 import PaymentTest from "./pages/PaymentTest/PaymentTest";
+import SatimPayment from "./pages/SatimPayment/SatimPayment";
+import PaymentFailed from "./pages/PaymentFailed/PaymentFailed";
 import MyOrders from "./pages/MyOrders/MyOrders";
 import NearestOrders from "./pages/NearestOrders/NearestOrders";
 import DeliveryAccount from "./pages/DeliveryAccount/DeliveryAccount";
@@ -57,6 +59,8 @@ const App = () => {
           <Route path="/order" element={<PlaceOrder />} />
           <Route path="/verify" element={<Verify />} />
           <Route path="/payment-test" element={<PaymentTest />} />
+          <Route path="/satim-payment" element={<SatimPayment />} />
+          <Route path="/payment-failed" element={<PaymentFailed />} />
           <Route path="/myorders" element={<MyOrders />} />
           <Route path="/nearest-orders" element={<NearestOrders />} />
           <Route path="/delivery/account/*" element={<DeliveryAccount />} />
