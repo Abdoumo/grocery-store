@@ -125,6 +125,15 @@ const LoginPopup = ({ setShowLogin }) => {
                   <span className="btn-icon">🚴</span>
                   <span className="btn-label">Deliver Groceries</span>
                 </button>
+
+                <button
+                  type="button"
+                  className={`account-type-btn ${data.role === "wholesaler" ? "active" : ""}`}
+                  onClick={() => setData((prev) => ({ ...prev, role: "wholesaler" }))}
+                >
+                  <span className="btn-icon">📦</span>
+                  <span className="btn-label">wholesaler</span>
+                </button>
               </div>
             </div>
           )}

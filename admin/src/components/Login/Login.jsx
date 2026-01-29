@@ -28,7 +28,7 @@ const Login = ({ url }) => {
       if (response.data.success) {
         const userRole = response.data.role;
         const isAdmin = userRole === "admin";
-        const isDelivery = userRole === "delivery" || userRole === "livreur";
+        const isDelivery = userRole === "delivery" || userRole === "livreur"|| userRole === "wholesaler";
 
         if (isAdmin || isDelivery) {
           const loginToken = response.data.token;

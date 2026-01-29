@@ -6,7 +6,7 @@ import { StoreContext } from '../../context/StoreContext'
 
 const Sidebar = () => {
   const { admin, userRole } = useContext(StoreContext)
-  const isDelivery = userRole === 'delivery' || userRole === 'livreur'
+  const isDelivery = userRole === 'delivery' || userRole === 'livreur'  || userRole ===  "wholesaler"
 
   return (
     <div className='sidebar'>

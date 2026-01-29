@@ -186,7 +186,7 @@ const OrderTrackingMap = () => {
   };
 
   useEffect(() => {
-    const isDelivery = userRole === 'delivery' || userRole === 'livreur';
+    const isDelivery = userRole === 'delivery' || userRole === 'livreur ' || userRole ===  'wholesaler' ;
     setIsDeliveryPerson(isDelivery);
 
     if (token && orderId && userId) {

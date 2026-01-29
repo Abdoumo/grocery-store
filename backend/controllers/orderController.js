@@ -232,7 +232,7 @@ const getNearestOrders = async (req, res) => {
       if (!user) {
         return res.json({ success: false, message: "User not found" });
       }
-      if (user.role !== "delivery" && user.role !== "livreur") {
+      if (user.role !== "delivery" && user.role !== "livreur" && user.role !==   "wholesaler") {
         console.log(`[getNearestOrders] User ${deliveryPersonId} has role '${user.role}', not delivery personnel`);
         return res.json({ success: false, message: "Only delivery personnel can view orders" });
       }
@@ -320,7 +320,7 @@ const getAvailableOrders = async (req, res) => {
         console.log(`[getAvailableOrders] User ${deliveryPersonId} not found`);
         return res.json({ success: false, message: "User not found" });
       }
-      if (user.role !== "delivery" && user.role !== "livreur") {
+      if (user.role !== "delivery" && user.role !== "livreur" && user.role !==  "wholesaler") {
         console.log(`[getAvailableOrders] User ${deliveryPersonId} has role '${user.role}', not delivery personnel`);
         return res.json({ success: false, message: "Only delivery personnel can view orders" });
       }
@@ -358,7 +358,7 @@ const getPendingOrders = async (req, res) => {
     // Verify delivery person role
     if (deliveryPersonId) {
       const user = await userModel.findById(deliveryPersonId);
-      if (!user || (user.role !== "delivery" && user.role !== "livreur")) {
+      if (!user || (user.role !== "delivery" && user.role !== "livreur" && user.role !==  "wholesaler")) {
         return res.json({ success: false, message: "Only delivery personnel can view orders" });
       }
     }
@@ -402,7 +402,7 @@ const acceptOrder = async (req, res) => {
     }
 
     // Check if user is a delivery person
-    if (deliveryPerson.role !== "delivery" && deliveryPerson.role !== "livreur") {
+    if (deliveryPerson.role !== "delivery" && deliveryPerson.role !== "livreur"  && deliveryPerson.role  !==  "wholesaler") {
       return res.json({ success: false, message: "Only delivery personnel can accept orders" });
     }
 

@@ -19,7 +19,8 @@ import { StoreContext } from "./context/StoreContext";
 const App = () => {
   const url = import.meta.env.VITE_API_URL || "http://localhost:4000";
   const { admin, token, userRole } = useContext(StoreContext);
-  const isDelivery = userRole === "delivery" || userRole === "livreur";
+  //wholesaler
+  const isDelivery = userRole === "delivery" || userRole === "livreur"|| userRole === "wholesaler";
   const isAuthenticated = token && (admin || isDelivery);
 
   return (
