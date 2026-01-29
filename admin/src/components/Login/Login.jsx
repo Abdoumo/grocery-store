@@ -128,7 +128,7 @@ const Login = ({ url }) => {
           </form>
 
           <div className="login-footer">
-            <p className="demo-text">Demo: admin@clinic.com / admin123</p>
+            <p className="demo-text">Demo: admin@aic-groceries.com / AICGroceries12345687</p>
           </div>
         </div>
       </div>

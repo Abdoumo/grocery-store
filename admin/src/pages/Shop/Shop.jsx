@@ -27,7 +27,7 @@ const Shop = ({ url }) => {
   });
   const [togglingId, setTogglingId] = useState(null);
 
-  const shopTypes = ["restaurant", "butchers"];
+  const shopTypes = ["restaurant", "butchers", "Grocery store" , "Other Shops"];
 
   const fetchShops = async () => {
     try {

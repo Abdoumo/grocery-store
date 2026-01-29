@@ -15,8 +15,8 @@ const createShop = async (req, res) => {
     }
 
     // Validate type
-    if (!["restaurant", "butchers"].includes(type)) {
-      return res.json({ success: false, message: "Type must be 'restaurant' or 'butchers'" });
+    if (!["restaurant", "butchers", "Grocery store" , "Other Shops"].includes(type)) {
+      return res.json({ success: false, message: "Type must be 'restaurant' or 'butchers' or any other type of stores" });
     }
 
     let image_filename = "";
@@ -56,7 +56,7 @@ const listShops = async (req, res) => {
     let filter = { isActive: true };
 
     if (type) {
-      if (!["restaurant", "butchers"].includes(type)) {
+      if (!["restaurant", "butchers", "Grocery store" , "Other Shops"].includes(type)) {
         return res.json({ success: false, message: "Invalid shop type" });
       }
       filter.type = type;
@@ -113,7 +113,7 @@ const updateShop = async (req, res) => {
     }
 
     // Validate type if provided
-    if (type && !["restaurant", "butchers"].includes(type)) {
+    if (type && !["restaurant", "butchers", "Grocery store" , "Other Shops"].includes(type)) {
       return res.json({ success: false, message: "Type must be 'restaurant' or 'butchers'" });
     }
 

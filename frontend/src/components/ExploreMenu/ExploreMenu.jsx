@@ -8,12 +8,14 @@ const ExploreMenu = ({ category, setCategory }) => {
   const handleShopChange = (shopId) => {
     setSelectedShop(shopId);
     setCategory("All");
-  };
+  };["restaurant", "butchers", "Grocery store" , "Other Shops"]
 
   const getShopTypeBadge = (type) => {
     const typeMap = {
       restaurant: "🍽️ Restaurant",
       butchers: "🥩 Butchers",
+      'Grocery store': "Grocery store",
+      "Other Shops": "Other Shops",
     };
     return typeMap[type] || type;
   };
