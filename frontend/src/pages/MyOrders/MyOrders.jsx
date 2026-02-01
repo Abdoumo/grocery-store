@@ -114,6 +114,11 @@ const MyOrders = () => {
                     })}
                   </p>
                   <p className="item-count">Items: {order.items.length}</p>
+                  {order.estimatedDeliveryTime && (
+                    <p className="delivery-estimate">
+                      📦 Delivery: {new Date(order.estimatedDeliveryTime).toLocaleString()}
+                    </p>
+                  )}
                 </div>
                 <p className="order-amount">Da{order.amount}.00</p>
                 <p className={`order-status status-badge ${statusColor}`}>

@@ -135,6 +135,17 @@
   color: #999;
 }
 
+.delivery-estimate {
+  font-size: 12px;
+  color: #2ed573;
+  font-weight: 600;
+  margin-top: 4px;
+  padding: 6px 10px;
+  background-color: #f0f9ff;
+  border-radius: 4px;
+  border-left: 3px solid #2ed573;
+}
+
 .order-amount {
   color: #ff6b35;
   font-weight: 700;

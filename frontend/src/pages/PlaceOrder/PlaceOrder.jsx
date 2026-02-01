@@ -30,6 +30,8 @@ const PlaceOrder = () => {
   const [deliveryType, setDeliveryType] = useState(locationState?.state?.deliveryType || "standard");
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [estimatedDeliveryTime, setEstimatedDeliveryTime] = useState(null);
+  const [loadingDeliveryTime, setLoadingDeliveryTime] = useState(false);
   const lastFetchedDistanceRef = useRef(null);
   const permissionRequestedRef = useRef(false);
   const debounceTimerRef = useRef(null);
@@ -253,6 +255,32 @@ const PlaceOrder = () => {
     await requestLocationPermission(true);
   };
 
+  // Fetch estimated delivery time on component mount
+  useEffect(() => {
+    const fetchEstimatedDeliveryTime = async () => {
+      try {
+        setLoadingDeliveryTime(true);
+        const response = await axios.post(url + "/api/delivery-time-rules/estimate", {
+          orderTime: null, // null means use current time
+        });
+
+        if (response.data.success) {
+          setEstimatedDeliveryTime(response.data);
+        } else {
+          console.warn("No delivery rule found:", response.data.message);
+          setEstimatedDeliveryTime(null);
+        }
+      } catch (error) {
+        console.error("Error fetching delivery time estimate:", error);
+        setEstimatedDeliveryTime(null);
+      } finally {
+        setLoadingDeliveryTime(false);
+      }
+    };
+
+    fetchEstimatedDeliveryTime();
+  }, [url]);
+
   useEffect(()=>{
     if(!token){
       toast.error("Please Login first")
@@ -414,6 +442,27 @@ const PlaceOrder = () => {
         </div>
       </div>
       <div className="place-order-right">
+        {estimatedDeliveryTime && (
+          <div className="estimated-delivery-info">
+            <h3>📦 Estimated Delivery</h3>
+            <div className="delivery-info-content">
+              <p className="delivery-rule-name">
+                <strong>{estimatedDeliveryTime.rule.name}</strong>
+              </p>
+              <p className="delivery-time-details">
+                <span className="time-label">Delivery Time:</span>
+                <span className="time-value">{estimatedDeliveryTime.deliveryTime}</span>
+              </p>
+              <p className="delivery-date-details">
+                <span className="date-label">Delivery Date:</span>
+                <span className="date-value">{estimatedDeliveryTime.deliveryDateType}</span>
+              </p>
+              <p className="delivery-full-date">
+                {new Date(estimatedDeliveryTime.deliveryDate).toLocaleString()}
+              </p>
+            </div>
+          </div>
+        )}
         <div className="cart-total">
           <h2>Cart Totals</h2>
           <div>

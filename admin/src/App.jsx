@@ -11,6 +11,7 @@ import Category from "./pages/Category/Category";
 import Pricing from "./pages/Pricing/Pricing";
 import DeliveryTracking from "./pages/DeliveryTracking/DeliveryTracking";
 import OrderTrackingMap from "./pages/OrderTrackingMap/OrderTrackingMap";
+import OrderTimeControl from "./pages/OrderTimeControl/OrderTimeControl";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login/Login";
@@ -42,6 +43,7 @@ const App = () => {
                   <Route path="/category" element={<Category url={url}/>} />
                   <Route path="/pricing" element={<Pricing url={url}/>} />
                   <Route path="/delivery-tracking" element={<DeliveryTracking url={url}/>} />
+                  <Route path="/order-time-control" element={<OrderTimeControl url={url}/>} />
                 </>
               )}
               <Route path="/order-tracking/:orderId" element={<OrderTrackingMap/>} />

@@ -17,6 +17,7 @@ const orderSchema = new mongoose.Schema({
   startedAt: { type: Date, default: null },
   deliveredAt: { type: Date, default: null },
   estimatedDeliveryTime: { type: Number, default: null },
+  appliedDeliveryRuleId: { type: mongoose.Schema.Types.ObjectId, ref: "deliveryTimeRule", default: null },
   deliveryType: { type: String, enum: ["standard", "yasir", "door-to-door"], default: "standard" },
   paymentMethod: { type: String, enum: ["cod", "satim"], default: "cod" },
   chargilyCheckoutId: { type: String, default: null },

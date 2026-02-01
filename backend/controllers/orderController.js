@@ -1,6 +1,7 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import { createCheckout, verifyCheckout } from "../config/chargily.js";
+import { calculateDeliveryTime } from "./deliveryTimeRuleController.js";
 
 // Haversine formula to calculate distance between two coordinates (in km)
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -30,6 +31,9 @@ const placeOrder = async (req, res) => {
     const paymentMethod = req.body.paymentMethod || "cod";
     const isOnlinePayment = paymentMethod === "satim";
 
+    // Calculate delivery time based on rules
+    const deliveryTimeResult = await calculateDeliveryTime();
+
     const newOrder = new orderModel({
       userId: req.body.userId,
       shopId: req.body.shopId || null,
@@ -41,6 +45,8 @@ const placeOrder = async (req, res) => {
       deliveryLocation: req.body.deliveryLocation || null,
       deliveryType: req.body.deliveryType || "standard",
       paymentMethod: paymentMethod,
+      estimatedDeliveryTime: deliveryTimeResult.success ? deliveryTimeResult.estimatedDeliveryTime : null,
+      appliedDeliveryRuleId: deliveryTimeResult.success ? deliveryTimeResult.rule.id : null,
     });
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
@@ -51,14 +57,22 @@ const placeOrder = async (req, res) => {
         message: "Order created. Redirecting to payment gateway...",
         orderId: newOrder._id,
         requiresPayment: true,
-        paymentMethod: "satim"
+        paymentMethod: "satim",
+        estimatedDeliveryTime: deliveryTimeResult.success ? deliveryTimeResult.deliveryDate : null,
+        estimatedDeliveryMessage: deliveryTimeResult.success
+          ? `Delivery scheduled for ${deliveryTimeResult.deliveryTime} on ${deliveryTimeResult.deliveryDateType}`
+          : "Delivery time to be confirmed"
       });
     } else {
       return res.json({
         success: true,
         message: "Order placed successfully. Please pay on delivery.",
         orderId: newOrder._id,
-        requiresPayment: false
+        requiresPayment: false,
+        estimatedDeliveryTime: deliveryTimeResult.success ? deliveryTimeResult.deliveryDate : null,
+        estimatedDeliveryMessage: deliveryTimeResult.success
+          ? `Delivery scheduled for ${deliveryTimeResult.deliveryTime} on ${deliveryTimeResult.deliveryDateType}`
+          : "Delivery time to be confirmed"
       });
     }
   } catch (error) {
